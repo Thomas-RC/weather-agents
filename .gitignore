@@ -1,0 +1,39 @@
+# Env
+.env
+.env.local
+
+# Secrets (service account keys, etc.) — folder się trzyma, zawartość nie
+secrets/*
+!secrets/.gitkeep
+!secrets/README.md
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+*.egg-info/
+dist/
+build/
+
+# Tools
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# Data volumes
+data/qdrant/
+data/minio/
+data/mariadb/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+.DS_Store
+
+# Logs
+*.log

@@ -1,0 +1,69 @@
+[project]
+name = "weather-rag"
+version = "0.1.0"
+description = "Multimodalny RAG pogodowy: ADK + Vertex AI + Qdrant + MinIO + MariaDB"
+requires-python = ">=3.12"
+readme = "README.md"
+
+dependencies = [
+    # Google
+    "google-adk>=1.18.0",
+    "google-genai>=1.0.0",
+    "google-cloud-aiplatform>=1.71.0",
+    "vertexai>=1.71.0",
+    # App
+    "streamlit>=1.40.0",
+    # Storage
+    "qdrant-client>=1.13.0",
+    "boto3>=1.35.0",
+    "sqlalchemy>=2.0.0",
+    "pymysql>=1.1.0",
+    "cryptography>=43.0.0",
+    # Pipeline
+    "apscheduler>=3.10.0",
+    "requests>=2.32.0",
+    "pillow>=11.0.0",
+    "plotly>=5.24.0",
+    "pandas>=2.2.0",
+    # Config + utils
+    "pydantic>=2.9.0",
+    "pydantic-settings>=2.6.0",
+    "structlog>=24.4.0",
+    "tenacity>=9.0.0",
+    "python-dotenv>=1.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.3.0",
+    "pytest-asyncio>=0.24.0",
+    "pytest-mock>=3.14.0",
+    "ruff>=0.7.0",
+    "mypy>=1.13.0",
+    "types-requests>=2.32.0",
+]
+
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["src*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "N", "UP", "B", "C4", "SIM"]
+ignore = ["E501"]
+
+[tool.mypy]
+python_version = "3.12"
+strict_optional = true
+warn_unused_ignores = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
