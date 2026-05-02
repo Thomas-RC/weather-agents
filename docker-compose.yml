@@ -7,6 +7,12 @@ services:
       - "6334:6334"
     volumes:
       - ./data/qdrant:/qdrant/storage
+    networks: [default, proxy]
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.qdrant.rule=Host(`qdrant.local.pl`)"
+      - "traefik.http.services.qdrant.loadbalancer.server.port=6333"
     restart: unless-stopped
     healthcheck:
       test: ["CMD-SHELL", "bash -c '</dev/tcp/localhost/6333' || exit 1"]
@@ -26,6 +32,13 @@ services:
     command: server /data --console-address ":9001"
     volumes:
       - ./data/minio:/data
+    networks: [default, proxy]
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.minio.rule=Host(`minio.local.pl`)"
+      - "traefik.http.routers.minio.service=minio"
+      - "traefik.http.services.minio.loadbalancer.server.port=9001"
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "mc", "ready", "local"]
@@ -67,6 +80,12 @@ services:
     depends_on:
       mariadb:
         condition: service_healthy
+    networks: [default, proxy]
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.phpmyadmin.rule=Host(`db.local.pl`)"
+      - "traefik.http.services.phpmyadmin.loadbalancer.server.port=80"
     restart: unless-stopped
 
   worker:
@@ -94,8 +113,6 @@ services:
       dockerfile: deploy/Dockerfile.worker
     container_name: weather-adk-web
     profiles: ["dev"]
-    ports:
-      - "8002:8000"
     depends_on:
       qdrant:
         condition: service_healthy
@@ -109,7 +126,18 @@ services:
     volumes:
       - ${GOOGLE_SA_KEY_FILE:-./secrets/sa-key.json}:/gcp/sa-key.json:ro
     command: ["adk", "web", "--host", "0.0.0.0", "--port", "8000", "src/agents"]
+    networks: [default, proxy]
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.weather-rag.rule=Host(`weather-rag.local.pl`)"
+      - "traefik.http.services.weather-rag.loadbalancer.server.port=8000"
     restart: unless-stopped
+
+networks:
+  default:
+  proxy:
+    external: true
 
 volumes:
   mariadb_data:
