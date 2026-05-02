@@ -13,10 +13,10 @@ zaprojektowana aplikacja multimodalnego RAG, w pełni działająca lokalnie w Do
 wykorzystująca chmurę (Vertex AI) tylko do wywołań modeli (LLM + embeddery).
 
 **Zakres modalności:**
-- 📊 sensory liczbowe (temperatura, ciśnienie, wiatr, wilgotność, opady) — IMGW + Open-Meteo
-- 🖼️ obrazy radaru (PNG mapy odbić) — RainViewer
-- 🛰️ obrazy satelitarne (true color MODIS / VIIRS) — NASA GIBS WMTS
-- 📝 tekst (ostrzeżenia meteo + auto-opisy stanu pogody) — IMGW warnings + generator
+- sensory liczbowe (temperatura, ciśnienie, wiatr, wilgotność, opady) — IMGW + Open-Meteo
+- obrazy radaru (PNG mapy odbić) — RainViewer
+- obrazy satelitarne (true color MODIS / VIIRS) — NASA GIBS WMTS
+- tekst (ostrzeżenia meteo + auto-opisy stanu pogody) — IMGW warnings + generator
 
 **Co robi aplikacja:**
 - Q&A naturalne: "*Gdzie teraz pada najmocniej w Polsce?*"
@@ -43,13 +43,13 @@ wykorzystująca chmurę (Vertex AI) tylko do wywołań modeli (LLM + embeddery).
 | Auth do Vertex AI | Service Account JSON (mount `secrets/*.json` → `/gcp/sa-key.json`) | host → kontenery |
 
 **Decyzje świadomie odrzucone:**
-- ❌ Vertex AI Vector Search (drogi endpoint 24/7) → Qdrant lokalnie
-- ❌ Cloud Run / Cloud Scheduler / Pub/Sub → docker-compose + APScheduler
-- ❌ PostgreSQL + TimescaleDB → MariaDB (znajomy ekosystem, skala wystarczy)
-- ❌ Redis pub/sub → niepotrzebne (worker = scheduler + embedder w jednym procesie)
-- ❌ Jaeger/Prometheus/Grafana → `adk web` daje tracing w devie, na prod logi JSON wystarczą
-- ❌ Caddy reverse proxy → na MVP dostęp przez `localhost:8501`
-- ❌ ADK Visual Builder → trzymamy się czystego Pythona
+- Vertex AI Vector Search (drogi endpoint 24/7) → Qdrant lokalnie
+- Cloud Run / Cloud Scheduler / Pub/Sub → docker-compose + APScheduler
+- PostgreSQL + TimescaleDB → MariaDB (znajomy ekosystem, skala wystarczy)
+- Redis pub/sub → niepotrzebne (worker = scheduler + embedder w jednym procesie)
+- Jaeger/Prometheus/Grafana → `adk web` daje tracing w devie, na prod logi JSON wystarczą
+- Caddy reverse proxy → na MVP dostęp przez `localhost:8501`
+- ADK Visual Builder → trzymamy się czystego Pythona
 
 ---
 
@@ -256,9 +256,9 @@ przed kontynuacją.
 - **Test:** `pytest tests/unit/test_fetchers.py` — mockowane requests, sprawdza modele
 
 **Checkpoint Batch 1:**
-- ✅ `docker compose up` startuje 3 infra kontenery
-- ✅ Storage layer pisze i czyta z każdego backendu
-- ✅ Fetchery zwracają poprawne modele
+- `docker compose up` startuje 3 infra kontenery
+- Storage layer pisze i czyta z każdego backendu
+- Fetchery zwracają poprawne modele
 - → Demo: notebook lub skrypt `scripts/demo_batch1.py` pobiera dane i zapisuje do storów
 - **Pytanie do użytkownika: lecimy dalej?**
 
@@ -300,9 +300,9 @@ przed kontynuacją.
 - **Test:** dwukrotne uruchomienie backfilla nie tworzy duplikatów
 
 **Checkpoint Batch 2:**
-- ✅ Pełen pipeline działa autonomicznie (worker pobiera, embeduje, upsertuje)
-- ✅ Idempotentny — restart bez duplikatów
-- ✅ MariaDB ma sensor_readings, MinIO ma PNG-i, Qdrant ma wektory z named pairs
+- Pełen pipeline działa autonomicznie (worker pobiera, embeduje, upsertuje)
+- Idempotentny — restart bez duplikatów
+- MariaDB ma sensor_readings, MinIO ma PNG-i, Qdrant ma wektory z named pairs
 - → Demo: po 1h działania workera mamy realny dataset
 - **Pytanie do użytkownika: lecimy dalej?**
 
@@ -367,9 +367,9 @@ przed kontynuacją.
   5. Upload PNG radaru: "*co to za zjawisko?*" → radar_agent
 
 **Checkpoint Batch 3:**
-- ✅ Każdy sub-agent działa samodzielnie
-- ✅ Router poprawnie routuje 5/5 testowych pytań
-- ✅ `adk web` pokazuje czytelny trace decyzji routera
+- Każdy sub-agent działa samodzielnie
+- Router poprawnie routuje 5/5 testowych pytań
+- `adk web` pokazuje czytelny trace decyzji routera
 - → Demo: live test w `adk web` 5 zapytaniami
 - **Pytanie do użytkownika: lecimy dalej?**
 
@@ -416,9 +416,9 @@ przed kontynuacją.
   modułach)
 
 **Checkpoint Batch 4:**
-- ✅ Pełna apka działa od `docker compose up` do odpowiedzi z cytowaniami
-- ✅ Streaming UI, multimodal upload, galeria, wykresy
-- ✅ Testy zielone, README kompletne, screenshoty zrobione
+- Pełna apka działa od `docker compose up` do odpowiedzi z cytowaniami
+- Streaming UI, multimodal upload, galeria, wykresy
+- Testy zielone, README kompletne, screenshoty zrobione
 - → Demo: pełen flow, 5-10 zapytań, prezentacja architektury
 - **Projekt gotowy do oddania.**
 

@@ -59,9 +59,10 @@ def fetch_warnings(timeout: float = 10.0) -> list[WeatherWarning]:
 def _parse_warning(row: dict[str, Any]) -> WeatherWarning:
     valid_from = _maybe_dt(row.get("obowiazuje_od") or row.get("ważne_od"))
     valid_to = _maybe_dt(row.get("obowiazuje_do") or row.get("ważne_do"))
+    area = _stringify(row.get("obszar") or row.get("teryt"))
     eid = deterministic_id(
         "imgw-warn",
-        row.get("teryt") or row.get("obszar"),
+        area,
         row.get("zjawisko"),
         valid_from.isoformat() if valid_from else "",
     )
@@ -69,12 +70,21 @@ def _parse_warning(row: dict[str, Any]) -> WeatherWarning:
         external_id=eid,
         level=str(row.get("stopien") or row.get("level") or "") or None,
         phenomenon=row.get("zjawisko") or row.get("phenomenon"),
-        area=row.get("obszar") or row.get("teryt"),
+        area=area,
         valid_from=valid_from,
         valid_to=valid_to,
         content=row.get("tresc") or row.get("content"),
         raw=row,
     )
+
+
+def _stringify(v: object) -> str | None:
+    """IMGW czasem zwraca listę kodów TERYT — joinujemy do stringa."""
+    if v is None:
+        return None
+    if isinstance(v, list):
+        return ", ".join(str(x) for x in v) or None
+    return str(v) or None
 
 
 def _maybe_dt(s: object) -> datetime | None:

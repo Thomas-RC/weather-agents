@@ -9,8 +9,7 @@ dependencies = [
     # Google
     "google-adk>=1.18.0",
     "google-genai>=1.0.0",
-    "google-cloud-aiplatform>=1.71.0",
-    "vertexai>=1.71.0",
+    "google-cloud-aiplatform[all]>=1.71.0",
     # App
     "streamlit>=1.40.0",
     # Storage

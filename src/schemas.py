@@ -9,7 +9,7 @@ from pydantic import BaseModel, ConfigDict, Field
 
 Modality = Literal["sensor", "radar", "satellite", "text"]
 Source = Literal[
-    "imgw", "imgw-warnings", "open-meteo", "rainviewer", "owm-satellite", "auto-summary"
+    "imgw", "imgw-warnings", "open-meteo", "rainviewer", "nasa-gibs", "auto-summary"
 ]
 
 

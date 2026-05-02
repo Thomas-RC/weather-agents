@@ -37,28 +37,29 @@ services:
     image: mariadb:11.6
     container_name: weather-mariadb
     ports:
-      - "3306:3306"
+      - "3307:3306"
     environment:
       MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD}
       MARIADB_DATABASE: ${MARIADB_DATABASE}
       MARIADB_USER: ${MARIADB_USER}
       MARIADB_PASSWORD: ${MARIADB_PASSWORD}
     volumes:
-      - ./data/mariadb:/var/lib/mysql
+      - mariadb_data:/var/lib/mysql
       - ./infra/sql/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      test: ["CMD", "healthcheck.sh", "--su-mysql", "--connect", "--innodb_initialized"]
       interval: 10s
       timeout: 5s
       retries: 10
+      start_period: 30s
 
   phpmyadmin:
     image: phpmyadmin:5.2
     container_name: weather-phpmyadmin
     profiles: ["admin"]
     ports:
-      - "8080:80"
+      - "8081:80"
     environment:
       PMA_HOST: mariadb
       PMA_PORT: 3306
@@ -67,3 +68,48 @@ services:
       mariadb:
         condition: service_healthy
     restart: unless-stopped
+
+  worker:
+    build:
+      context: .
+      dockerfile: deploy/Dockerfile.worker
+    container_name: weather-worker
+    depends_on:
+      qdrant:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+      mariadb:
+        condition: service_healthy
+    env_file: [.env]
+    environment:
+      GOOGLE_APPLICATION_CREDENTIALS: /gcp/sa-key.json
+    volumes:
+      - ${GOOGLE_SA_KEY_FILE:-./secrets/sa-key.json}:/gcp/sa-key.json:ro
+    restart: unless-stopped
+
+  adk-web:
+    build:
+      context: .
+      dockerfile: deploy/Dockerfile.worker
+    container_name: weather-adk-web
+    profiles: ["dev"]
+    ports:
+      - "8002:8000"
+    depends_on:
+      qdrant:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+      mariadb:
+        condition: service_healthy
+    env_file: [.env]
+    environment:
+      GOOGLE_APPLICATION_CREDENTIALS: /gcp/sa-key.json
+    volumes:
+      - ${GOOGLE_SA_KEY_FILE:-./secrets/sa-key.json}:/gcp/sa-key.json:ro
+    command: ["adk", "web", "--host", "0.0.0.0", "--port", "8000", "src/agents"]
+    restart: unless-stopped
+
+volumes:
+  mariadb_data:
