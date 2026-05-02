@@ -170,6 +170,63 @@ weather-rag/
 └── tests/                     # unit (mock) + integration (live)
 ```
 
+## Bibliografia i źródła
+
+### Publikacje naukowe (arxiv.org)
+
+**Retrieval-Augmented Generation:**
+- Lewis et al. (2020), *Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks* — https://arxiv.org/abs/2005.11401 (foundational RAG paper)
+- Shi et al. (2023), *REPLUG: Retrieval-Augmented Black-Box Language Models* — https://arxiv.org/abs/2301.12652
+- Gao et al. (2024), *Retrieval-Augmented Generation for Large Language Models: A Survey* — https://arxiv.org/abs/2312.10997
+
+**Multimodalne embeddings i retrieval:**
+- Radford et al. (2021), *Learning Transferable Visual Models From Natural Language Supervision* (CLIP) — https://arxiv.org/abs/2103.00020
+- Jia et al. (2021), *Scaling Up Visual and Vision-Language Representation Learning With Noisy Text Supervision* (ALIGN) — https://arxiv.org/abs/2102.05918
+- Lin et al. (2024), *MM-Embed: Universal Multimodal Retrieval with Multimodal LLMs* — https://arxiv.org/abs/2411.02571
+
+**Multi-agent LLM:**
+- Wu et al. (2023), *AutoGen: Enabling Next-Gen LLM Applications via Multi-Agent Conversation* — https://arxiv.org/abs/2308.08155
+- Hong et al. (2024), *MetaGPT: Meta Programming for Multi-Agent Collaborative Framework* — https://arxiv.org/abs/2308.00352
+- Park et al. (2023), *Generative Agents: Interactive Simulacra of Human Behavior* — https://arxiv.org/abs/2304.03442
+
+**ML w prognozach pogody (kontekst dla analog forecasting):**
+- Lam et al. (2023), *GraphCast: Learning skillful medium-range global weather forecasting* — https://arxiv.org/abs/2212.12794 (DeepMind)
+- Bi et al. (2022), *Pangu-Weather: A 3D High-Resolution Model for Fast and Accurate Global Weather Forecast* — https://arxiv.org/abs/2211.02556
+- Pathak et al. (2022), *FourCastNet: A Global Data-driven High-resolution Weather Model using Adaptive Fourier Neural Operators* — https://arxiv.org/abs/2202.11214
+- Lorenz (1969), *Atmospheric Predictability as Revealed by Naturally Occurring Analogues* — klasyczna praca o analog forecasting (J. Atmos. Sci.)
+
+### Dokumentacja Google
+
+**Agent Development Kit (ADK):**
+- ADK home — https://adk.dev
+- Quickstart Python — https://adk.dev/get-started/quickstart/
+- Multi-agent patterns — https://adk.dev/agents/multi-agents/
+- LlmAgent / Workflow agents — https://adk.dev/agents/llm-agents/, https://adk.dev/agents/workflow-agents/
+- Agent-as-a-Tool — https://adk.dev/tools-custom/function-tools/
+- Tutorial multi-tool weather agent — https://adk.dev/tutorials/multi-tool-agent/
+- Tutorial agent team — https://adk.dev/tutorials/agent-team/
+
+**Vertex AI / Gemini:**
+- Gemini 2.5 Pro / Flash overview — https://cloud.google.com/vertex-ai/generative-ai/docs/learn/models
+- Text embeddings (`gemini-embedding-001`) — https://cloud.google.com/vertex-ai/generative-ai/docs/embeddings/get-text-embeddings
+- Multimodal embeddings (`multimodalembedding@001`) — https://cloud.google.com/vertex-ai/generative-ai/docs/embeddings/get-multimodal-embeddings
+- Thinking budget (Gemini 2.5) — https://cloud.google.com/vertex-ai/generative-ai/docs/thinking
+- Vertex AI authentication (Service Accounts) — https://cloud.google.com/vertex-ai/docs/general/authentication
+
+### Narzędzia open source
+
+- **Qdrant** (vector DB, named vectors) — https://qdrant.tech/documentation/
+- **MinIO** (S3-compatible object storage) — https://min.io/docs/minio/linux/index.html
+- **MariaDB** — https://mariadb.org/documentation/
+- **APScheduler** — https://apscheduler.readthedocs.io/
+
+### Źródła danych
+
+- **IMGW** (synop + warnings) — https://danepubliczne.imgw.pl
+- **Open-Meteo** (forecast + archive) — https://open-meteo.com, https://open-meteo.com/en/docs/historical-weather-api
+- **RainViewer** (radar tiles) — https://www.rainviewer.com/api.html
+- **NASA GIBS** (satellite WMTS, MODIS Terra/Aqua) — https://nasa-gibs.github.io/gibs-api-docs/, https://wiki.earthdata.nasa.gov/display/GIBS
+
 ## Licencja / autorzy
 
 Projekt zaliczeniowy WSB.
